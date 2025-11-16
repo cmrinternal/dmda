@@ -16,8 +16,8 @@ lines(new.data$xvalues,predict(model,newdata=new.data))
 print(sum(resid(model)^2))
 print(confint(model))
 -----------------------------------------------------------------------------------------------------------------------
+# decision tree
 data(iris)
-
 library(C50)
 library(caTools)
 
@@ -25,9 +25,15 @@ set.seed(7)
 
 split <- sample.split(iris$Species, SplitRatio = 0.7)
 training <- subset(iris, split == TRUE)
+testing  <- subset(iris, split == FALSE)
 
-model<-C5.0(Species~.,data=training)
+model <- C5.0(Species ~ ., data = training)
+
 summary(model)
-a<-table(testing$Species,pred)
-sum(diag(a))/sum(a)
+
+pred <- predict(model, testing)
+
+a <- table(testing$Species, pred)
+sum(diag(a)) / sum(a)
+
 plot(model)
